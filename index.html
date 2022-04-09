@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"> 
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+    <title>To-do list</title>
+</head>
+<body>
+    <header>
+        <div class="logo">Logo</div>
+
+    </header>
+    <section class="list">
+    <div class="category">
+        <h3>Category</h3>
+        <ul>
+            <li><div class="catDetail"><i class="fa-solid fa-bullseye"></i><a href="#" class="page">Eth</a></div></li>
+            <li><div class="catDetail"><i class="fa-regular fa-user"></i><a href="#" class="page">Personal</a></div></li>
+            <li><div class="catDetail"><i class="fa-solid fa-book"></i><a href="#" class="page">School</a></div></li>
+            <li><div class="catDetail"><i class="fa-solid fa-suitcase"></i><a href="#" class="page">Work</a></div></li>
+        </ul>
+    </div>
+
+        
+        
+        
+        </div> 
+    <div class="todo">
+        <h3>Todo</h3>
+        <div class="container">
+            <div class="todolist">
+                <input type="text" name="" id="task" placeholder="Enter your task">
+                <div class="btnList">
+                     <select name="cat" id="cat">
+                           <option value="" disabled>Type</option>
+                           <option value="school">Eth</option>
+                           <option value="personal">personal</option>
+                           <option value="school">School</option>
+                           <option value="design">Design</option>
+                      </select>
+                  <input type="button" value="Add" id="add"></div>
+            </div>
+        </div>
+    </div>
+      
+</section>
+<script>
+     const container = document.querySelector(".container");
+    const add = document.getElementById("add");
+    const task = document.getElementById("task");
+    const catergory = document.getElementById("cat");
+    let counter = 0;
+
+    const notesObj = JSON.parse(localStorage.getItem("dave")) || [];
+
+    notesObj.map((note) => {
+      const wrapper = document.createElement("div");
+      wrapper.className = "wrapper";
+      const wrapperbtn = document.createElement("div");
+      wrapperbtn.className = "wrapperbtn";
+      const btnup = document.createElement("button");
+      const p = document.createElement("p");
+      btnup.innerHTML='<i class="fa-solid fa-pen"></i>';
+      const btndel = document.createElement("button");
+      btndel.innerHTML='<i class="fa-solid fa-trash"></i>';
+      btndel.id = "delete";
+      btnup.dataset.id = note.id;
+      btnup.id = "update";
+      btnup.className = "update";
+      p.innerText = note.notes;
+      p.style.color="#002667";
+      p.style.fontWeight=600;
+      p.contentEditable = "true";
+      wrapper.appendChild(p);
+      wrapperbtn.appendChild(btnup);
+      wrapperbtn.appendChild(btndel);
+      wrapper.appendChild(wrapperbtn);
+      container.appendChild(wrapper);
+      btndel.addEventListener("click", (e) => {
+        e.preventDefault();
+        const t = notesObj.filter((el) => {
+          if (el.id != note.id) return el;
+        });
+        localStorage.setItem("dave", JSON.stringify(t));
+      });
+
+      // btnup.addEventListener("click", (e) => {
+      //   let data = p.innerText;
+      //   console.log(data);
+      //   e.preventDefault();
+      //   const t = notesObj.filter((el) => {
+      //     if (el.id == note.id) el.notes = data;
+      //   });
+      //   localStorage.setItem("dave", JSON.stringify(t));
+      // });
+
+      // container.appendChild(p);
+    });
+    const up = document.querySelectorAll(".update");
+    // console.log(notes);
+    let d = JSON.parse(localStorage.getItem("dave"));
+    up.forEach((el) => {
+      el.addEventListener("click", (e) => {
+        e.preventDefault();
+        const id = el.getAttribute("data-id");
+        // let a = d.forEach((note) => {
+        //   console.log(d);
+        //   if (note.id == id) {
+        //     note.notes = "sd";
+        //   }
+        //   return note;
+        // });
+        console.log(a);
+        // localStorage.setItem("dave", JSON.stringify(a));
+      });
+    });
+    add.addEventListener("click", (e) => {
+      e.preventDefault();
+      notesObj.push({
+        notes: task.value,
+        category: catergory.value,
+        id: Math.floor(Math.random() * 30000),
+      });
+
+      // const wrapper=document.createElement('div');
+      // const btnup= document.createElement('button');
+      // btnup.innerText='update';
+      // wrapper.appendChild(btnup);
+      // container.appendChild(wrapper);
+
+      localStorage.setItem("dave", JSON.stringify(notesObj));
+      const notes = JSON.parse(localStorage.getItem("dave"));
+      const p = document.createElement("p");
+      console.log(notes);
+      const wrapper = document.createElement("div");
+      wrapper.className = "wrapper";
+      const btnup = document.createElement("button");
+      const btndel = document.createElement("button");
+      console.log(notes);
+      notes.map((note) => {
+        p.id = note.id;
+        p.contentEditable = "true";
+        btnup.innerHTML='<i class="fa-solid fa-pen"></i>';
+
+      btndel.innerHTML='<i class="fa-solid fa-trash"></i>';
+        btnup.id = "update";
+        btndel.id = "delete";
+        btnup.classList = "update";
+        p.innerText = note.notes;
+        p.style.color="#002667";
+        p.style.fontWeight=600;
+        container.appendChild(wrapper);
+        wrapper.appendChild(p);
+        wrapper.appendChild(btnup);
+        wrapper.appendChild(btndel);
+        btndel.addEventListener("click", (e) => {
+          e.preventDefault();
+          console.log(note.id);
+          const t = notes.filter((el) => {
+            if (el.id != note.id) {
+              return el;
+            }
+          });
+          localStorage.setItem("dave", JSON.stringify(t));
+        });
+
+        // btnup.addEventListener("click", (e) => {
+        //   e.preventDefault();
+        //   let val = p.innerText;
+        //   // console.log(val);
+        //   const t = notes.filter((el) => {
+        //     if (el.id == note.id) {
+        //       el.notes = val;
+        //     }
+        //     return el;
+        //   });
+        //   // for (n of notes) {
+        //   //   if (n.id == note.id) {
+        //   //     note.notes = val;
+        //   //     console.log("boom");
+        //   //   }
+        //   // }
+        //   // console.log(notes);
+        //   localStorage.setItem("dave", JSON.stringify(t));
+        // });
+      });
+    });
+</script>
+
+<script src="https://kit.fontawesome.com/8488b4087d.js" crossorigin="anonymous"></script>
+
+</body>
+</html>
